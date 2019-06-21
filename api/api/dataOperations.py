@@ -35,5 +35,34 @@ class Initialization(schema):
             conn.close()
         return None
 
-class SQL_Operations(object):
+class SQL_Operations(schema):
 
+    def __init__(self):
+        return None
+
+    def valueReturningQuery(self, SQL):        
+        try:
+            conn = sqlite3.connect(self.DB_FILE)
+            c = conn.cursor()
+            results = c.execute(SQL)
+        except Error as e:
+            results = null
+            print(e)
+        finally:
+            conn.close()
+
+        return results
+
+    def nonValueReturningQuery(self, SQL):
+        try:
+            conn = sqlite3.connect(self.DB_FILE)
+            c = conn.cursor()
+            c.execute(SQL)
+            results = True
+        except Error as e:
+            results = False
+            print(e)
+        finally:
+            conn.close()
+
+        return results

@@ -4,7 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c4a411aa-a7a1-4b04-b3e6-7e01ceb04913</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>module2.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,15 +26,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Groups.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Initialization.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="module1.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="module2.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Roles.py">

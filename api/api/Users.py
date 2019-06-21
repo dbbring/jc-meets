@@ -1,27 +1,19 @@
 from flask_restful import Resource, reqparse
+from dataOperations import Initialization, SQL_Operations
 from db_schema import schema
 
-class User(Resource,schema):
-    users = [
-        {
-            "name": "Nicholas",
-            "age": 42,
-            "occupation": "Network Engineer"
-        },
-        {
-            "name": "Elvin",
-            "age": 32,
-            "occupation": "Doctor"
-        },
-        {
-            "name": "Jass",
-            "age": 22,
-            "occupation": "Web Developer"
-        }
-    ]
+class User(Resource):
+    init = Initialization()
+    db_resources = schema()
+    
 
     def __init__(self):
-        return 
+        # Check for a DB, if we dont have one create one
+        if self.db_resources.getDatabasePath():
+            return  None
+        else:
+            self.init.createTables()
+        return None
 
     def get(self, name):
         for user in self.users:
