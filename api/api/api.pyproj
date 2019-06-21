@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c4a411aa-a7a1-4b04-b3e6-7e01ceb04913</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>api.py</StartupFile>
+    <StartupFile>module2.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,7 +21,34 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="api.py" />
+    <Compile Include="dataOperations.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Groups.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Initialization.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="module1.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="module2.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Roles.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="routes.py" />
+    <Compile Include="db_schema.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Users.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="lib\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
