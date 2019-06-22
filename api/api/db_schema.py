@@ -9,7 +9,7 @@ import logging
 class schema():
     DB_FILE = "jc_meets_db.db"
     DB_NAME = "JC_Meets"
-    GRP_TABLE = "Groups"
+    GRP_TBL = "Groups"
     GRP_TBL_ID = "Group_ID"
     GRP_TBL_NAME = "Group_Name"
     USR_TBL = "Users"
@@ -21,7 +21,8 @@ class schema():
     ROLE_TBL_DESCRIP = "Role_Descrip"
     ROLE_TBL_NAME = "Role_Name"
     MEM_TBL = "Membership"
-    MEM_TBL_USER_ID = "Membership_ID"
+    MEM_TBL_ID = "Member_ID"
+    MEM_TBL_USER_ID = "Member_User_ID"
     MEM_TBL_GROUP_ID = "Member_Group_ID"
     MEM_TBL_ROLE_ID = "Member_Role_ID"
 
@@ -30,26 +31,6 @@ class schema():
     #=================================================================================================
 
     def __init__(self):        
-        return None
-
-    def createTables(self):
-        try:
-            conn = sqlite3.connect(self.DB_FILE)
-            c = conn.cursor()
-            # Create Tables
-            c.execute(self.CREATE_GROUP_SQL)
-            c.execute(self.CREATE_USERS_SQL)
-            c.execute(self.CREATE_MEMBERSHIP_SQL)
-            c.execute(self.CREATE_ROLES_SQL)
-            # Populate Tables
-            c.execute(self.INSERT_GROUP_SQL)
-            c.execute(self.INSERT_ROLE_SQL)
-            c.execute(self.INSERT_USERS_SQL)
-            c.execute(self.CREATE_MEMBERSHIP_SQL)
-        except Error as e:
-            print(e)
-        finally:
-            conn.close()
         return None
 
     # ==================================================================================================

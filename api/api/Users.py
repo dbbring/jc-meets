@@ -5,6 +5,8 @@ from db_schema import schema
 class User(Resource):
     init = Initialization()
     db_resources = schema()
+    sql_operations = SQL_Operations()
+    
     
 
     def __init__(self):
@@ -16,9 +18,11 @@ class User(Resource):
         return None
 
     def get(self, name):
-        for user in self.users:
-            if(name == user["name"]):
-                return user, 200
+        res = self.db_resources
+        sql = ("SELECT * FROM " + res.getUserTable + " WHERE " + res.getUserFirstName + " = ?",(name,))
+        user = sql_operations.valueReturningQuery(sql)   
+        if(len(user) > 0 and user):
+            return user, 200
         return "User not found", 404
 
     def post(self, name):
@@ -63,3 +67,21 @@ class User(Resource):
         global users
         users = [user for user in users if user["name"] != name]
         return "{} is deleted.".format(name), 200
+
+class AllUsers(Resource):
+
+    def __init__(self):
+        # Check for a DB, if we dont have one create one
+        if self.db_resources.getDatabasePath():
+            return  None
+        else:
+            self.init.createTables()
+        return None
+
+    def get(self, name):
+        res = self.db_resources
+        sql = ("SELECT * FROM " + res.getUserTable + " WHERE " + res.getUserFirstName + " = ?",(name,))
+        user = sql_operations.valueReturningQuery(sql)   
+        if(len(user) > 0 and user):
+            return user, 200
+        return "User not found", 404
