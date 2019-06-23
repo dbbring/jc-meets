@@ -1,32 +1,23 @@
-
 from flask_restful import Resource, reqparse
+from flask import jsonify
+from dataOperations import Initialization, SQL_Operations
+from db_schema import schema
 
 class Group(Resource):
-    users = [
-        {
-            "name": "Nicholas",
-            "age": 42,
-            "occupation": "Network Engineer"
-        },
-        {
-            "name": "Elvin",
-            "age": 32,
-            "occupation": "Doctor"
-        },
-        {
-            "name": "Jass",
-            "age": 22,
-            "occupation": "Web Developer"
-        }
-    ]
-
+    db_resources = schema()
+    sql_operations = SQL_Operations()
+    
     def __init__(self):
-        return 
+        # Check for DB, if we cant find one, lets make one
+        init = Initialization()
+        return None
 
     def get(self, name):
-        for user in self.users:
-            if(name == user["name"]):
-                return user, 200
+        res = self.db_resources
+        sql = "SELECT * FROM " + res.getGroupTableName() + " WHERE " + res.getGroupName() + " = '" + name + "';"
+        user = self.sql_operations.valueReturningQuery(sql)   
+        if(user is not None):
+            return user, 200
         return "User not found", 404
 
     def post(self, name):
@@ -68,6 +59,31 @@ class Group(Resource):
         return user, 201
 
     def delete(self, name):
-        global users
-        users = [user for user in users if user["name"] != name]
-        return "{} is deleted.".format(name), 200
+        sql = "DELETE FROM " + self.db_resources.getGroupTableName() + " WHERE " + self.db_resources.getGroupName() + " = '" + name + "';"
+        deleteGroup = self.sql_operations.nonValueReturningQuery(sql)
+        if (deleteGroup):
+            succesfulResults = jsonify(deleted=True)
+            succesfulResults.status_code = 200
+            return succesfulResults
+        notFoundResults = jsonify(deleted=False)
+        notFoundResults.status_code = 404
+        return notFoundResults
+
+class Groups(Resource):
+    db_resources = schema()
+    sql_operations = SQL_Operations()
+
+    def __init__(self):
+       # Check for DB, if we cant find one, lets make one
+        init = Initialization()
+        return None
+
+    def get(self):
+        res = self.db_resources
+        sql = "SELECT * FROM " + res.getGroupTableName()
+        user = self.sql_operations.valueReturningQuery(sql)   
+        if(user is not None):
+            #results = jsonify(user)
+            #results.status_code = 200
+            return user
+        return "No Results Are Available", 404

@@ -44,7 +44,7 @@ class schema():
         return self.DB_NAME
 
     def getGroupTableName(self):
-        return self.GRP_TABLE
+        return self.GRP_TBL
 
     def getGroupID(self):
         return self.GRP_TBL_ID
