@@ -3,6 +3,7 @@ from dataOperations import Initialization, SQL_Operations
 from db_schema import schema
 
 class User(Resource):
+    # Grab our data layer objects
     db_resources = schema()
     sql_operations = SQL_Operations()
     
@@ -11,9 +12,12 @@ class User(Resource):
         init = Initialization()
         return None
 
+    # @params :name = str, user first name for where clause
+    # @return = JSON dict of the user found, otherwise None
     def get(self, name):
         res = self.db_resources
         sql = "SELECT * FROM " + res.getUserTableName() + " WHERE " + res.getUserFirstName() + " = (?);"
+        # Use parameterized query for finding a specific user
         user = self.sql_operations.valueReturningQuery(sql,(name,))   
         if(user is not None):
             return user, 200
@@ -32,6 +36,7 @@ class User(Resource):
         return user, 400
 
 class Users(Resource):
+    # Grab our data layer objects
     db_resources = schema()
     sql_operations = SQL_Operations()
 
@@ -40,6 +45,7 @@ class Users(Resource):
         init = Initialization()
         return None
 
+    # @return JSON dict of all users, otherwise None
     def get(self):
         res = self.db_resources
         sql = "SELECT * FROM " + res.getUserTableName()

@@ -10,7 +10,8 @@ class Membership(Resource):
         # Check for DB, if we cant find one, lets make one
         init = Initialization()
         return None
-
+    # @params :id = int, membership id for the where clause
+    # @return = JSON dict of the user found, otherwise None
     def get(self, id):
         res = self.db_resources
         sql = "SELECT * FROM " + res.getMembershipTableName() + " WHERE " + res.getMembershipID() + " = (?);"
@@ -39,7 +40,7 @@ class Memberships(Resource):
        # Check for DB, if we cant find one, lets make one
         init = Initialization()
         return None
-
+    # @return JSON dict of all memberships, otherwise None
     def get(self):
         res = self.db_resources
         sql = "SELECT * FROM " + res.getMembershipTableName()

@@ -3,6 +3,7 @@ from dataOperations import Initialization, SQL_Operations
 from db_schema import schema
 
 class Role(Resource):
+    # Grab our data layer objects
     db_resources = schema()
     sql_operations = SQL_Operations()
     
@@ -11,6 +12,8 @@ class Role(Resource):
         init = Initialization()
         return None
 
+    # @params :name = str, role name for where clause
+    # @return = JSON dict of the user found, otherwise None
     def get(self, name):
         res = self.db_resources
         sql = "SELECT * FROM " + res.getRoleTableName() + " WHERE " + res.getRoleName() + " = (?);"
@@ -32,6 +35,7 @@ class Role(Resource):
         return user, 400
 
 class Roles(Resource):
+    # Grab our data layer objects
     db_resources = schema()
     sql_operations = SQL_Operations()
 
@@ -40,6 +44,7 @@ class Roles(Resource):
         init = Initialization()
         return None
 
+    # @return JSON dict of all roles, otherwise None
     def get(self):
         res = self.db_resources
         sql = "SELECT * FROM " + res.getRoleTableName()

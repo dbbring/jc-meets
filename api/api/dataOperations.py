@@ -2,9 +2,13 @@ import sqlite3
 import logging
 from pathlib import Path
 from db_schema import schema
-import sys
 
 class Initialization(schema):
+    # Setup our logger so we can log errors to file
+    logging.basicConfig(filename='data-operations-ERR_LOG.log', level=logging.ERROR, 
+                    format='%(asctime)s %(levelname)s %(name)s %(message)s')
+    logger = logging.getLogger(__name__)
+
     def __init__(self):       
         # Check for a DB, if we dont have one create one
         if Path(self.DB_FILE).is_file():
@@ -12,7 +16,8 @@ class Initialization(schema):
         else:
             self.createTables()
         return None
-
+    # @return None
+    # @descrip - creates tables and populates needed fields for jc-meets
     def createTables(self):
         # Create Groups
         CREATE_GROUP_SQL = "CREATE TABLE IF NOT EXISTS " + self.GRP_TBL + " (" + self.GRP_TBL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + self.GRP_TBL_NAME + " TEXT NOT NULL);" 
@@ -55,12 +60,17 @@ class Initialization(schema):
                 c.execute(INSERT_MEM_SQL,(x))
             conn.commit()
         except Exception as e:
-            print(e, file=sys.stderr)
+            # Catch general exception and write to file
+            self.logger.error(e)
         finally:
             conn.close()
         return None
 
 class SQL_Operations(schema):
+    # Setup our logger so we can log errors to file
+    logging.basicConfig(filename='data-operations-ERR_LOG.log', level=logging.ERROR, 
+                    format='%(asctime)s %(levelname)s %(name)s %(message)s')
+    logger = logging.getLogger(__name__)
 
     def __init__(self):
         return None
@@ -70,6 +80,9 @@ class SQL_Operations(schema):
         return dict((cursor.description[idx][0], value)
                 for idx, value in enumerate(row))
 
+    # @params SQL - str, valid SQL Statement
+    # @params SQL_Params - tuple, valid SQL Parameter. For only one parameter make sure to include comma after
+    # @return JSON dict of the SQL Query
     def valueReturningQuery(self, SQL, SQL_Params):        
         try:
             conn = sqlite3.connect(self.DB_FILE)
@@ -79,11 +92,15 @@ class SQL_Operations(schema):
             results = c.fetchall()
         except Exception as e:
             results = None
-            print(e)
+            # Catch general exception and write to file
+            self.logger.error(e)
         finally:
             conn.close()
         return results
 
+    # @params  SQL - str, valid SQL Statement
+    # @params SQL_Params - tuple, valid SQL Paramter. For only one parameter make sure to include comma after first field
+    # @return Boolean - true if operation succeeded , false if operation failed
     def nonValueReturningQuery(self, SQL, SQL_Params):
         try:
             conn = sqlite3.connect(self.DB_FILE)
@@ -93,8 +110,8 @@ class SQL_Operations(schema):
             results = True
         except Exception as e:
             results = False
-            print(e, file=sys.stderr)
+            # Catch general exception and write to file
+            self.logger.error(e)
         finally:
             conn.close()
-
         return results
