@@ -27,6 +27,9 @@
     <Compile Include="Groups.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Membership.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Roles.py">
       <SubType>Code</SubType>
     </Compile>

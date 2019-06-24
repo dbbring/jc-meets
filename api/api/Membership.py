@@ -2,7 +2,7 @@ from flask_restful import Resource
 from dataOperations import Initialization, SQL_Operations
 from db_schema import schema
 
-class Role(Resource):
+class Membership(Resource):
     db_resources = schema()
     sql_operations = SQL_Operations()
     
@@ -11,13 +11,13 @@ class Role(Resource):
         init = Initialization()
         return None
 
-    def get(self, name):
+    def get(self, id):
         res = self.db_resources
-        sql = "SELECT * FROM " + res.getRoleTableName() + " WHERE " + res.getRoleName() + " = (?);"
-        role = self.sql_operations.valueReturningQuery(sql,(name,))   
-        if(role is not None):
-            return role, 200
-        return "Role not found", 404
+        sql = "SELECT * FROM " + res.getMembershipTableName() + " WHERE " + res.getMembershipID() + " = (?);"
+        mem = self.sql_operations.valueReturningQuery(sql,(id,))   
+        if(mem is not None):
+            return mem, 200
+        return "Membership not found", 404
 
     def post(self, name):
         # ======= Method Stub Assignment Doesn't Require Operation
@@ -31,7 +31,7 @@ class Role(Resource):
         # ======= Method Stub Assignment Doesn't Require Operation
         return user, 400
 
-class Roles(Resource):
+class Memberships(Resource):
     db_resources = schema()
     sql_operations = SQL_Operations()
 
@@ -42,8 +42,8 @@ class Roles(Resource):
 
     def get(self):
         res = self.db_resources
-        sql = "SELECT * FROM " + res.getRoleTableName()
-        roles = self.sql_operations.valueReturningQuery(sql, "")   
-        if(roles is not None):
-            return roles
-        return "No Roles Are Available", 404
+        sql = "SELECT * FROM " + res.getMembershipTableName()
+        mems = self.sql_operations.valueReturningQuery(sql, "")   
+        if(mems is not None):
+            return mems
+        return "No Results Are Available", 404

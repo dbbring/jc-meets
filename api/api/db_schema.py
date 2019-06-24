@@ -82,6 +82,9 @@ class schema():
     def getMembershipTableName(self):
         return self.MEM_TBL
 
+    def getMembershipID(self):
+        return self.MEM_TBL_ID
+
     def getMembershipGroupID(self):
         return self.MEM_TBL_GROUP_ID
 

@@ -13,8 +13,8 @@ class User(Resource):
 
     def get(self, name):
         res = self.db_resources
-        sql = "SELECT * FROM " + res.getUserTableName() + " WHERE " + res.getUserFirstName() + " = '" + name + "';"
-        user = self.sql_operations.valueReturningQuery(sql)   
+        sql = "SELECT * FROM " + res.getUserTableName() + " WHERE " + res.getUserFirstName() + " = (?);"
+        user = self.sql_operations.valueReturningQuery(sql,(name,))   
         if(user is not None):
             return user, 200
         return "User not found", 404
@@ -43,9 +43,7 @@ class Users(Resource):
     def get(self):
         res = self.db_resources
         sql = "SELECT * FROM " + res.getUserTableName()
-        user = self.sql_operations.valueReturningQuery(sql)   
+        user = self.sql_operations.valueReturningQuery(sql,"")   
         if(user is not None):
-            #results = jsonify(user)
-            #results.status_code = 200
             return user
         return "No Results Are Available", 404
