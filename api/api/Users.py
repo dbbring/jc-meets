@@ -1,5 +1,4 @@
-from flask_restful import Resource, reqparse
-from flask import jsonify
+from flask_restful import Resource
 from dataOperations import Initialization, SQL_Operations
 from db_schema import schema
 
@@ -21,49 +20,16 @@ class User(Resource):
         return "User not found", 404
 
     def post(self, name):
-        parser = reqparse.RequestParser()
-        parser.add_argument("age")
-        parser.add_argument("occupation")
-        args = parser.parse_args()
-
-        for user in self.users:
-            if(name == user["name"]):
-                return "User with name {} already exists".format(name), 400
-
-        user = {
-            "name": name,
-            "age": args["age"],
-            "occupation": args["occupation"]
-        }
-        self.users.append(user)
-        return user, 201
+        # ======= Method Stub Assignment Doesn't Require Operation
+        return user, 400
 
     def put(self, name):
-        parser = reqparse.RequestParser()
-        parser.add_argument("age")
-        parser.add_argument("occupation")
-        args = parser.parse_args()
-
-        for user in self.users:
-            if(name == user["name"]):
-                user["age"] = args["age"]
-                user["occupation"] = args["occupation"]
-                return user, 200
-        
-        user = {
-            "name": name,
-            "age": args["age"],
-            "occupation": args["occupation"]
-        }
-        self.users.append(user)
-        return user, 201
+        # ======= Method Stub Assignment Doesn't Require Operation
+        return user, 400
 
     def delete(self, name):
-        sql = "DELETE FROM" + self.db_resources.getUserTableName() + " WHERE " + self.getUserFirstName() + " = '" + name + "';"
-        deleteUser = self.sql_operations.nonValueReturningQuery(sql)
-        if (user):
-            return "{} is deleted.".format(name), 200
-        return "Cant Delete {}. User is not found.".format(name), 404
+        # ======= Method Stub Assignment Doesn't Require Operation
+        return user, 400
 
 class Users(Resource):
     db_resources = schema()

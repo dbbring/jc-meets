@@ -2,6 +2,7 @@ from flask_restful import Resource, reqparse
 from flask import jsonify
 from dataOperations import Initialization, SQL_Operations
 from db_schema import schema
+import sys
 
 class Group(Resource):
     db_resources = schema()
@@ -15,48 +16,10 @@ class Group(Resource):
     def get(self, name):
         res = self.db_resources
         sql = "SELECT * FROM " + res.getGroupTableName() + " WHERE " + res.getGroupName() + " = '" + name + "';"
-        user = self.sql_operations.valueReturningQuery(sql)   
-        if(user is not None):
-            return user, 200
-        return "User not found", 404
-
-    def post(self, name):
-        parser = reqparse.RequestParser()
-        parser.add_argument("age")
-        parser.add_argument("occupation")
-        args = parser.parse_args()
-
-        for user in self.users:
-            if(name == user["name"]):
-                return "User with name {} already exists".format(name), 400
-
-        user = {
-            "name": name,
-            "age": args["age"],
-            "occupation": args["occupation"]
-        }
-        self.users.append(user)
-        return user, 201
-
-    def put(self, name):
-        parser = reqparse.RequestParser()
-        parser.add_argument("age")
-        parser.add_argument("occupation")
-        args = parser.parse_args()
-
-        for user in self.users:
-            if(name == user["name"]):
-                user["age"] = args["age"]
-                user["occupation"] = args["occupation"]
-                return user, 200
-        
-        user = {
-            "name": name,
-            "age": args["age"],
-            "occupation": args["occupation"]
-        }
-        self.users.append(user)
-        return user, 201
+        group = self.sql_operations.valueReturningQuery(sql)   
+        if(group is not None):
+            return group, 200
+        return "Group not found", 404
 
     def delete(self, name):
         sql = "DELETE FROM " + self.db_resources.getGroupTableName() + " WHERE " + self.db_resources.getGroupName() + " = '" + name + "';"
@@ -81,9 +44,39 @@ class Groups(Resource):
     def get(self):
         res = self.db_resources
         sql = "SELECT * FROM " + res.getGroupTableName()
-        user = self.sql_operations.valueReturningQuery(sql)   
-        if(user is not None):
-            #results = jsonify(user)
-            #results.status_code = 200
-            return user
+        allGroups = self.sql_operations.valueReturningQuery(sql)   
+        if(allGroups is not None):
+            return allGroups, 200
         return "No Results Are Available", 404
+
+    
+    def post(self):
+        res = self.db_resources
+        parser = reqparse.RequestParser()
+        parser.add_argument("group_name")
+        args = parser.parse_args()
+        sql = "INSERT INTO " + res.getGroupTableName() + " (" + res.getGroupName() +") VALUES ('"+args["group_name"]+"');"
+        insertResults = self.sql_operations.nonValueReturningQuery(sql)
+        if (insertResults):
+            succesfulResults = jsonify(inserted=True)
+            succesfulResults.status_code = 201
+            return succesfulResults
+        badResults = jsonify(inserted=False)
+        badResults.status_code = 400
+        return badResults
+
+    def put(self):
+        res = self.db_resources
+        parser = reqparse.RequestParser()
+        parser.add_argument("group_id")
+        parser.add_argument("group_name")
+        args = parser.parse_args()
+        sql = "UPDATE " + res.getGroupTableName() + " SET " + res.getGroupName() +" = '"+args["group_name"]+"' WHERE "+ res.getGroupID() +" = " + args["group_id"] + ";"
+        insertResults = self.sql_operations.nonValueReturningQuery(sql)
+        if (insertResults):
+            succesfulResults = jsonify(inserted=True)
+            succesfulResults.status_code = 200
+            return succesfulResults
+        badResults = jsonify(inserted=False)
+        badResults.status_code = 404
+        return badResults

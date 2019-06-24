@@ -89,7 +89,7 @@ class SQL_Operations(schema):
             results = True
         except Exception as e:
             results = False
-            print(e)
+            print(e, file=sys.stderr)
         finally:
             conn.close()
 
