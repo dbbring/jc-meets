@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restful import Api
+from flask_cors import CORS
 from Users import User, Users
 from Groups import Group, Groups
 from Roles import Role, Roles
@@ -7,7 +8,10 @@ from Membership import Membership, Memberships
 
 # Initialize Flask RESTful API
 app = Flask(__name__)
+# Simple usage of CORS for production I wouldnt allow everything
+CORS(app)
 api = Api(app)
+
 # Create endpoints
 api.add_resource(Users, "/user")
 api.add_resource(User, "/user/<string:name>")

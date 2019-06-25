@@ -40,7 +40,7 @@
 
 <script>
 export default {
-  name: "groups",
+  name: "users",
   data() {
     return {
       msg: "Welcome to Your Vue.js App"
