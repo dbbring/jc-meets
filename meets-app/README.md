@@ -1,6 +1,6 @@
 # meets-app
 
-> A meeting app 
+> a simple group meeting app
 
 ## Build Setup
 
