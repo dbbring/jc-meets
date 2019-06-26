@@ -1,4 +1,4 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, request
 from flask import jsonify
 from dataOperations import Initialization, SQL_Operations
 from db_schema import schema
@@ -79,12 +79,12 @@ class Groups(Resource):
     def put(self):
         res = self.db_resources
         parser = reqparse.RequestParser()
-        parser.add_argument("group_id")
-        parser.add_argument("group_name")
+        parser.add_argument("Group_ID")
+        parser.add_argument("Group_Name")
         args = parser.parse_args()
         sql = "UPDATE " + res.getGroupTableName() + " SET " + res.getGroupName() +" = (?) WHERE "+ res.getGroupID() +" = (?);"
         # Parameterized SQL (Remember no comma after parameter since we have more than one parameter)
-        insertResults = self.sql_operations.nonValueReturningQuery(sql,(args["group_name"], args["group_id"]))
+        insertResults = self.sql_operations.nonValueReturningQuery(sql,(args["Group_Name"], args["Group_ID"]))        
         if (insertResults):
             # JSONify our results
             succesfulResults = jsonify(updated=True)

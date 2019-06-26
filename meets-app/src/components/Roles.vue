@@ -33,7 +33,6 @@ export default {
     axios.get("http://localhost:5000/role").then(response => {
       this.roles = response.data;
       this.loading = false;
-      console.log(this.roles);
     });
   }
 };

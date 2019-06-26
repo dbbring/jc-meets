@@ -37,6 +37,9 @@
     <Compile Include="db_schema.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Uploads.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Users.py">
       <SubType>Code</SubType>
     </Compile>

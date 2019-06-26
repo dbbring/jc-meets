@@ -2,6 +2,7 @@ import sqlite3
 import logging
 from pathlib import Path
 from db_schema import schema
+import sys
 
 class Initialization(schema):
     # Setup our logger so we can log errors to file
@@ -105,7 +106,7 @@ class SQL_Operations(schema):
         try:
             conn = sqlite3.connect(self.DB_FILE)
             c = conn.cursor()
-            c.execute(SQL, SQL_Params)
+            c.execute(SQL, SQL_Params) 
             conn.commit()
             results = True
         except Exception as e:
