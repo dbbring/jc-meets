@@ -22,7 +22,6 @@
           </div>
         </div>
         <div class="col-md-9">
-          {{this.$store.state.data}}
           <about v-if="sections[0].show"></about>
           <uploads v-if="sections[1].show"></uploads>
           <groups v-if="sections[2].show"></groups>
@@ -43,8 +42,8 @@ Fire up dev server... navigate to jc-meets/api/api and run  python -m pip instal
 import groups from "./components/Groups";
 import users from "./components/Users";
 import roles from "./components/Roles";
-import uploads from "./components/uploads";
-import about from "./components/about";
+import uploads from "./components/Uploads";
+import about from "./components/About";
 import axios from "axios";
 
 export default {
