@@ -61,11 +61,11 @@ class Groups(Resource):
     def post(self):
         res = self.db_resources
         parser = reqparse.RequestParser()
-        parser.add_argument("group_name")
+        parser.add_argument("Group_Name")
         args = parser.parse_args()
         sql = "INSERT INTO " + res.getGroupTableName() + " (" + res.getGroupName() +") VALUES (?);"
         # Parameterized SQL (Remember comma after parameter since we only have one parameter)
-        insertResults = self.sql_operations.nonValueReturningQuery(sql,(args["group_name"],))
+        insertResults = self.sql_operations.nonValueReturningQuery(sql,(args["Group_Name"],))
         if (insertResults):
             # JSONify our results
             succesfulResults = jsonify(inserted=True)
