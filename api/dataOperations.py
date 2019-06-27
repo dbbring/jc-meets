@@ -107,6 +107,8 @@ class SQL_Operations(schema):
             conn = sqlite3.connect(self.DB_FILE)
             c = conn.cursor()
             c.execute(SQL, SQL_Params)
+            # Even if we have valid SQL query, we may not modifiy any data. Make sure we have modified data
+            # before sending back a true flag
             if(c.rowcount > 0):
                 conn.commit()
                 results = True
