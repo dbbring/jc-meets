@@ -5,6 +5,7 @@
         class="row py-5"
         style="background:url(../static/images/jc-meets-header.jpg) center center no-repeat; background-size: cover;"
       >
+        <!-- set title based on fragement displayed -->
         <div class="col-sm-12 text-white text-right">
           <h1>{{sections[activeSection].title}}</h1>
         </div>
@@ -12,6 +13,7 @@
       <div class="row">
         <div class="col-md-3 bg-danger" style="height: 75vH;">
           <div class="list-group mt-4">
+            <!-- populate sidebar menu -->
             <a
               href="#"
               class="list-group-item list-group-item-action bg-danger text-white"
@@ -27,7 +29,6 @@
           <groups v-if="sections[2].show"></groups>
           <users v-if="sections[3].show"></users>
           <roles v-if="sections[4].show"></roles>
-          <!-- groups, users, etc components here-->
         </div>
       </div>
     </div>
@@ -36,9 +37,6 @@
 </template>
 
 <script>
-/*
-Fire up dev server... navigate to jc-meets/api/api and run  python -m pip install -r requirements.txt ... then run python routes.py
-*/
 import groups from "./components/Groups";
 import users from "./components/Users";
 import roles from "./components/Roles";
@@ -51,7 +49,7 @@ export default {
   data() {
     return {
       sections: [
-        { title: "About JC Meets", show: false },
+        { title: "About JC Meets", show: true },
         { title: "Upload Data", show: false },
         { title: "Groups", show: false },
         { title: "Users", show: false },
@@ -69,30 +67,18 @@ export default {
   },
   methods: {
     /*
-    Use vuex store to manage state of data like populate store with api calls and modifiy state which then commits a api call. 
-     */
+    @params -> int, index number of section to be displayed. 0 is about, 1 is upload, 2 is groups, 3 is users, 4 is roles
+    @return -> none
+    */
     toggleSection(newSection) {
       this.sections[this.activeSection].show = false;
       this.sections[newSection].show = true;
       this.activeSection = newSection;
+      return;
     }
-  },
-  mounted() {
-    let self = this;
-    axios.get("http://localhost:5000/group").then(response => {
-      self.$store.commit("setData", response.data);
-    });
   }
 };
 </script>
 
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>

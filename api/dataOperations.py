@@ -41,7 +41,7 @@ class Initialization(schema):
             fakeGroups = [("Cornhusker Group"),("Beans Group"),("Bull Group"),("Steer Group")]
             fakeRoles = [("Leads the group presentation", "Presenter"),("Person thats attending group","Particpant"),("Person that plans group activities","Organizer")]
             fakeUsers = [("Justin", "Collier" ),("Brent","Burkey"),("Kay","H"),("Derek","Bringewatt")]
-            fakeMembership = [(1,2,4),(1,1,1)]
+            fakeMembership = [(1,2,4),(1,1,1),(1,3,4),(2,3,3)]
             # Connect
             conn = sqlite3.connect(self.DB_FILE)
             c = conn.cursor()

@@ -1,7 +1,10 @@
 <template>
   <div id="about">
     <div class="row">
-      <div class="col-sm-12">
+      <div v-if="isError" class="col-sm-12 text-center mt-5">
+        <h5 class="h5 text-danger">There was a Error Submitting Your Request.</h5>
+      </div>
+      <div v-else class="col-sm-12">
         <h2>JC Meets</h2>
         <p>JC meets is sample SPA that uses a Python Flask API backend with a Vue.JS Front end. Its only requirements are CRUD actions on groups.</p>
       </div>
@@ -30,6 +33,7 @@ export default {
   data() {
     return {
       loading: true,
+      isError: false,
       groups: [],
       users: []
     };
@@ -38,11 +42,13 @@ export default {
     axios.get("http://localhost:5000/group").then(response => {
       this.groups = response.data;
       this.loading = false;
-    });
+    }).catch(() => {
+          this.loading = false;
+          this.isError = true;
+        });
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>

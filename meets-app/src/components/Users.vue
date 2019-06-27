@@ -4,6 +4,9 @@
       <div v-if="loading" class="col-sm-12 text-center mt-5">
         <img src="../../static/images/svg_loader.svg" height="150">
       </div>
+      <div v-else-if="isError" class="col-sm-12 text-center mt-5">
+        <h5 class="h5 text-danger">There was a Error Submitting Your Request.</h5>
+      </div>
       <div v-else v-for="(x,index) in users" :key="index" class="col-lg-3 mt-3">
         <div class="card" style="max-width: 18rem;">
           <div class="card-body">
@@ -25,14 +28,21 @@ export default {
   data() {
     return {
       loading: false,
+      isError: false,
       users: []
     };
   },
   mounted() {
-    axios.get("http://localhost:5000/user").then(response => {
-      this.users = response.data;
-      this.loading = false;
-    });
+    axios
+      .get("http://localhost:5000/user")
+      .then(response => {
+        this.users = response.data;
+        this.loading = false;
+      })
+      .catch(() => {
+        this.loading = false;
+        this.isError = true;
+      });
   }
 };
 </script>

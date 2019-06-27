@@ -5,6 +5,7 @@ from Users import User, Users
 from Groups import Group, Groups
 from Roles import Role, Roles
 from Membership import Membership, Memberships
+from Uploads import Upload
 
 # Initialize Flask RESTful API
 app = Flask(__name__)
@@ -21,5 +22,6 @@ api.add_resource(Roles, "/role")
 api.add_resource(Role, "/role/<string:name>")
 api.add_resource(Memberships, "/member")
 api.add_resource(Membership, "/member/<int:id>")
+api.add_resource(Upload, "/upload")
 # Dev env so lets debug
 app.run(debug=True)
