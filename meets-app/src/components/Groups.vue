@@ -283,6 +283,7 @@ export default {
         .replace(/'/g, "&#039;");
     }
   },
+  // TODO clean up mounted function with custom axios functions. DRY....DRY...
   mounted() {
     axios
       .get("http://localhost:5000/user")

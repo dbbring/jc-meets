@@ -1,21 +1,28 @@
-# meets-app
+# Meets App Front End
 
-> a simple group meeting app
+## {Step One} Install Dependencies
 
-## Build Setup
+Navigate to the jc-meets/meets-app folder. In other words, where you are currently... ;).
+Then simply run:
 
-``` bash
-# install dependencies
+```
 npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+Node package manager should download the required production and developmental libraries. I used vue-cli to generate this front end, so there are quite a few dev dependencies.
+
+## {Step Two} Serve It Up
+
+To run this locally, simply stay in the current folder (../jc-meets/meets-app) and run:
+
+```
+npm run dev
+```
+
+Provided there are no webpack issues, you should see the modules loading and soon your project will be available on localhost port 8080.
+
+## {Step Three} View the Project
+
+First off, please make sure the backend API is running in a seperate command terminal. Please see the Main docs, or the API docs to get the Flask-RESTful API running.
+
+Finally, visit http://localhost:8080 in your browser to see the project.

@@ -38,7 +38,7 @@ class Initialization(schema):
         INSERT_MEM_SQL = "INSERT INTO " + self.MEM_TBL + "(" + self.MEM_TBL_GROUP_ID + ", " + self.MEM_TBL_ROLE_ID + ", " + self.MEM_TBL_USER_ID + ") VALUES(?,?,?)"
         try:
             # Spin up some sweet pseudo information
-            fakeGroups = [("Cornhusker Group"),("Beans Group"),("Legume Group"),("Prarie Group")]
+            fakeGroups = [("Software Group"),("Hardware Group"),("DevOps Group"),("Embeded Group")]
             fakeRoles = [("Leads the group presentation", "Presenter"),("Person thats attending group","Particpant"),("Person that plans group activities","Organizer")]
             fakeUsers = [("Justin", "Collier" ),("Brent","Burkey"),("Kay","Krivolavek"),("Derek","Bringewatt")]
             fakeMembership = [(1,2,1),(1,2,2),(1,3,3),(1,1,4),(2,3,1),(2,1,2),(2,2,3),(2,2,4),(3,2,1),(3,3,2),(3,2,3),(3,1,4),(4,1,1),(4,2,2),(4,2,3),(4,3,4)]

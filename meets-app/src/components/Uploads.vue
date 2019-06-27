@@ -18,18 +18,21 @@
             <li
               class="list-group-item"
             >Column Order Is: First_Name (String) ,Last_Name (String), Group_Name(String), Role_ID(int)</li>
-            <li class="list-group-item">More here</li>
+            <li class="list-group-item">For Role ID's Refer to the Roles Section</li>
           </ul>
         </div>
         <div v-if="!loading" class="col-sm-12 text-center mt-5">
-          <input
-            type="file"
-            id="file"
-            @change="checkFile($event)"
-            title="Upload CSV File"
-            accept=".csv"
-          >
-          <label for="file" class="btn-2">Upload</label>
+          <div v-if="uploadNotSuccesful">
+            <input
+              type="file"
+              id="file"
+              @change="checkFile($event)"
+              title="Upload CSV File"
+              accept=".csv"
+            >
+            <label for="file" class="btn-2">Upload</label>
+          </div>
+          <div v-else class="alert alert-success" role="alert">Upload Was A...... Success!</div>
         </div>
       </div>
     </div>
@@ -45,6 +48,7 @@ export default {
   data() {
     return {
       isError: false,
+      uploadNotSuccesful: true,
       errorMsg: "There was a Error Submitting Your Request.",
       loading: false,
       exportJSON: {
@@ -92,7 +96,6 @@ export default {
       let url = "http://localhost:5000/upload";
       this.exportJSON.Upload_Array = data;
       let exportData = JSON.stringify(this.exportJSON.Upload_Array);
-      console.log(exportData);
       // Specify json in headers otherwise flask API will drop all data associated will POST request
       axios
         .post(url, exportData, {
@@ -101,7 +104,7 @@ export default {
           }
         })
         .then(response => {
-          console.log(response);
+          this.uploadNotSuccesful = false;
         })
         .catch(() => {
           this.loading = false;
