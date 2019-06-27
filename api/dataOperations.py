@@ -121,3 +121,27 @@ class SQL_Operations(schema):
         finally:
             conn.close()
         return results
+
+    # @params  table - str, valid SQL table
+    # @params whereArg - str, condtional column name
+    # @params whereParams - str, value to be checked
+    # @return Boolean - true if operation succeeded , false if operation failed
+    def ifExistsQuery(self, table, whereArg, whereParam):
+        try:
+            conn = sqlite3.connect(self.DB_FILE)
+            c = conn.cursor()
+            c.execute("SELECT EXISTS(SELECT 1 FROM "+ table + " WHERE "+ whereArg + " = '"+ whereParam + "' LIMIT 1);")
+            # Even if we have valid SQL query, we may not modifiy any data. Make sure we have modified data
+            # before sending back a true flag
+            queryResults = c.fetchone()
+            if(queryResults[0] == 1):
+                results = True
+            else:
+                raise Exception('Not a Valid SQL Statement') 
+        except Exception as e:
+            results = False
+            # Catch general exception and write to file
+            self.logger.error(e)
+        finally:
+            conn.close()
+        return results

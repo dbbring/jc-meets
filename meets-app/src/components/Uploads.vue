@@ -1,7 +1,12 @@
 <template>
   <div id="upload">
     <div class="row">
-      <div class="col-sm-12">
+      <!-- Error block for exceptions -->
+      <div v-if="isError" class="col-sm-12 text-center mt-5">
+        <h5 class="h5 text-danger">{{errorMsg}}</h5>
+        <button type="button" class="btn btn-danger" @click="isError = false">Ok</button>
+      </div>
+      <div v-else class="col-sm-12">
         <div v-if="loading" class="col-sm-12 text-center mt-5">
           <img src="../../static/images/svg_loader.svg" height="150">
         </div>
@@ -12,12 +17,18 @@
             <li class="list-group-item">Header Row Is Present</li>
             <li
               class="list-group-item"
-            >Column Order Is: First Name (String), Last Name (String), Group ID (int), Role ID (int)</li>
+            >Column Order Is: First_Name (String) ,Last_Name (String), Group_Name(String), Role_ID(int)</li>
             <li class="list-group-item">More here</li>
           </ul>
         </div>
         <div v-if="!loading" class="col-sm-12 text-center mt-5">
-          <input type="file" id="file" @change="checkFile($event)" title="Upload CSV File">
+          <input
+            type="file"
+            id="file"
+            @change="checkFile($event)"
+            title="Upload CSV File"
+            accept=".csv"
+          >
           <label for="file" class="btn-2">Upload</label>
         </div>
       </div>
@@ -27,33 +38,76 @@
 
 <script>
 import papa from "papaparse";
+import axios from "axios";
 
 export default {
   name: "uploads",
   data() {
     return {
-      loading: false
+      isError: false,
+      errorMsg: "There was a Error Submitting Your Request.",
+      loading: false,
+      exportJSON: {
+        Upload_Array: []
+      }
     };
   },
   methods: {
     checkFile(event) {
       this.loading = true;
-      // Get file from input
       const file = event.target.files[0];
       papa.parse(file, {
-        delimiter: ",",
+        delimiter: "",
+        newline: "",
+        quoteChar: '"',
+        escapeChar: '"',
         header: true,
-        // Will convert strings to dates and numbers
         dynamicTyping: true,
+        preview: 0,
+        encoding: "",
+        worker: true,
+        comments: false,
+        skipEmptyLines: false,
+        error: error => {
+          this.errorMsg = "Please Check Your CSV File for the proper format.";
+          this.isError = true;
+          this.loading = false;
+          return;
+        },
         complete: results => {
           if (results.errors.length > 0) {
-            console.log(results);
+            this.errorMsg = "Please Check Your CSV File for the proper format.";
+            this.isError = true;
+            this.loading = false;
             return;
           }
-          console.log(results.data);
           this.loading = false;
+          this.submitData(results.data);
+          return;
         }
       });
+    },
+    submitData(data) {
+      this.loading = true;
+      let url = "http://localhost:5000/upload";
+      this.exportJSON.Upload_Array = data;
+      let exportData = JSON.stringify(this.exportJSON.Upload_Array);
+      console.log(exportData);
+      // Specify json in headers otherwise flask API will drop all data associated will POST request
+      axios
+        .post(url, exportData, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(() => {
+          this.loading = false;
+          this.isError = true;
+        });
+      this.loading = false;
     }
   }
 };
