@@ -38,10 +38,10 @@ class Initialization(schema):
         INSERT_MEM_SQL = "INSERT INTO " + self.MEM_TBL + "(" + self.MEM_TBL_GROUP_ID + ", " + self.MEM_TBL_ROLE_ID + ", " + self.MEM_TBL_USER_ID + ") VALUES(?,?,?)"
         try:
             # Spin up some sweet pseudo information
-            fakeGroups = [("Cornhusker Group"),("Beans Group"),("Bull Group"),("Steer Group")]
+            fakeGroups = [("Cornhusker Group"),("Beans Group"),("Legume Group"),("Prarie Group")]
             fakeRoles = [("Leads the group presentation", "Presenter"),("Person thats attending group","Particpant"),("Person that plans group activities","Organizer")]
-            fakeUsers = [("Justin", "Collier" ),("Brent","Burkey"),("Kay","H"),("Derek","Bringewatt")]
-            fakeMembership = [(1,2,4),(1,1,1),(1,3,4),(2,3,3)]
+            fakeUsers = [("Justin", "Collier" ),("Brent","Burkey"),("Kay","Krivolavek"),("Derek","Bringewatt")]
+            fakeMembership = [(1,2,1),(1,2,2),(1,3,3),(1,1,4),(2,3,1),(2,1,2),(2,2,3),(2,2,4),(3,2,1),(3,3,2),(3,2,3),(3,1,4),(4,1,1),(4,2,2),(4,2,3),(4,3,4)]
             # Connect
             conn = sqlite3.connect(self.DB_FILE)
             c = conn.cursor()
@@ -106,9 +106,12 @@ class SQL_Operations(schema):
         try:
             conn = sqlite3.connect(self.DB_FILE)
             c = conn.cursor()
-            c.execute(SQL, SQL_Params) 
-            conn.commit()
-            results = True
+            c.execute(SQL, SQL_Params)
+            if(c.rowcount > 0):
+                conn.commit()
+                results = True
+            else:
+                raise Exception('Not a Valid SQL Statement') 
         except Exception as e:
             results = False
             # Catch general exception and write to file

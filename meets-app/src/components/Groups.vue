@@ -73,7 +73,7 @@
         <div v-for="(x, index) in groupDetails.groupManagers" :key="index">{{x}}</div>
         <br>
         <br>Presenters:
-        <div v-for="(x, index) in groupDetails.groupPresenter" :key="index + 200">{{x}}</div>
+        <div v-for="(x, index) in groupDetails.groupPresenters" :key="index + 200">{{x}}</div>
         <br>
         <br>Members:
         <div v-for="(x, index) in groupDetails.groupMembers" :key="index + 100">{{x}}</div>
@@ -179,11 +179,12 @@ export default {
     submitEditModal() {
       this.showEditModal = false;
       this.loading = true;
+      let cleanEditName = this.sanitize(this.editName);
       let url = "http://localhost:5000/group";
       let data = JSON.stringify({
         // Add one to the active group variable because arrays are zero based in JS and SQLITE is NOT 0 based
         Group_ID: this.activeGroup + 1,
-        Group_Name: this.editName
+        Group_Name: cleanEditName
       });
       axios.put(url, data).then(response => {
         this.loading = false;
@@ -198,9 +199,10 @@ export default {
     submitAddModal(arrIndexNum) {
       this.showAddModal = false;
       this.loading = true;
+      let cleanAddName = sanitize(this.addName);
       let url = "http://localhost:5000/group";
       let data = JSON.stringify({
-        Group_Name: this.addName
+        Group_Name: cleanAddName
       });
       // Specify json in headers otherwise flask API will drop all data associated will POST request
       axios
@@ -221,25 +223,21 @@ export default {
     @params -> int, index number of selected group item
     @return -> none
     */
+    // ============== TODO - break this method down to much smaller methods and not use so many loops.
     showGroupDetails(arrIndexNum) {
+      // Clear out our bound variables
       this.groupDetails.groupMembers = [];
       this.groupDetails.groupManagers = [];
+      this.groupDetails.groupPresenters = [];
       this.showDetailModal = true;
       this.groupDetails.groupName = this.groups[arrIndexNum].Group_Name;
-
+      // Filter our array down to just the selected group
       let filteredGroupArray = this.memebershipRoles.filter(filterByGroup);
-      let filteredRoleArray = filteredGroupArray.filter(filterByRole);
-
+      //Iterate through all users to find what each role of the group is.
+      // I could have done a sub-query SQL API end point as well, but I prefer to do the data maniuplation on the front end
+      // leaving the back end more flexible to suit everyone needs
       for (let x = 0; x < this.users.length; x++) {
-        //
-        for (let y = 0; y < filteredRoleArray.length; y++) {
-          if (this.users[x].User_ID === filteredRoleArray[y].Member_User_ID) {
-            this.groupDetails.groupManagers.push(
-              this.users[x].User_First_Name + " " + this.users[x].User_Last_Name
-            );
-          }
-        }
-        // this loop finds all the members
+        // Find the Members of the group
         for (let z = 0; z < filteredGroupArray.length; z++) {
           if (
             this.users[x].User_ID === filteredGroupArray[z].Member_User_ID &&
@@ -248,7 +246,19 @@ export default {
             this.groupDetails.groupMembers.push(
               this.users[x].User_First_Name + " " + this.users[x].User_Last_Name
             );
-          } else {
+            // Find the Organizers of the group
+          } else if (
+            this.users[x].User_ID === filteredGroupArray[z].Member_User_ID &&
+            filteredGroupArray[z].Member_Role_ID === 3
+          ) {
+            this.groupDetails.groupManagers.push(
+              this.users[x].User_First_Name + " " + this.users[x].User_Last_Name
+            );
+            // Find the Presenters of the group
+          } else if (
+            this.users[x].User_ID === filteredGroupArray[z].Member_User_ID &&
+            filteredGroupArray[z].Member_Role_ID === 1
+          ) {
             this.groupDetails.groupPresenters.push(
               this.users[x].User_First_Name + " " + this.users[x].User_Last_Name
             );
@@ -256,19 +266,21 @@ export default {
         }
       }
       /*
-    @params -> Role Object, must have Member_Role_ID prop
-    @return -> Object that is equal to the role id
-    */
-      function filterByRole(roleObj) {
-        return roleObj.Member_Role_ID === 3;
-      }
-      /*
     @params -> Group Object, must have Member_Group_ID prop
     @return -> Object that is equal to the group id
     */
       function filterByGroup(groupObj) {
-        return groupObj.Member_Group_ID === arrIndexNum;
+        return groupObj.Member_Group_ID === arrIndexNum + 1;
       }
+    },
+    // Clean data in , Clean data out
+    sanitize(input) {
+      return input
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
   },
   mounted() {
