@@ -42,7 +42,7 @@ This will use NPM to go out and download the required dependencies for the front
 
 Still in the same folder (../jc-meets/meets-app), fire up the node server in your seperate terminal using the following command:
 ```
-npm run dev
+npm run serve
 ```
 
 This will start a server on port 8080, and allow for hot-reloads while editing the project.

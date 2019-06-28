@@ -3,21 +3,25 @@
     <div class="container-fluid">
       <div
         class="row py-5"
-        style="background:url(../static/images/jc-meets-header.jpg) center center no-repeat; background-size: cover;"
+        style="background:url(jc-meets-header.jpg) center center no-repeat; background-size: cover;"
       >
         <!-- set title based on fragement displayed -->
         <div class="col-sm-12 text-white text-right">
-          <h1>{{sections[activeSection].title}}</h1>
+          <h1>{{ sections[activeSection].title }}</h1>
         </div>
       </div>
       <div class="row">
-        <nav class="navbar navbar-light bg-warning w-100" id="hamMenu" @click="showMenu()">
+        <nav
+          class="navbar navbar-light bg-warning w-100"
+          id="hamMenu"
+          @click="showMenu()"
+        >
           <button class="navbar-toggler" type="button">
             <span class="navbar-toggler-icon"></span>
           </button>
         </nav>
         <div
-          :class="{showHiddenMenu : showMenuDiv}"
+          :class="{ showHiddenMenu: showMenuDiv }"
           class="col-md-3 bg-danger"
           style="height: 75vH;"
           id="menu"
@@ -30,7 +34,8 @@
               v-for="(x, index) in sections"
               :key="index"
               @click="toggleSection(index)"
-            >{{x.title}}</a>
+              >{{ x.title }}</a
+            >
           </div>
         </div>
         <div class="col-md-9">
@@ -52,7 +57,6 @@ import users from "./components/Users";
 import roles from "./components/Roles";
 import uploads from "./components/Uploads";
 import about from "./components/About";
-import axios from "axios";
 
 export default {
   name: "meetsApp",

@@ -3,22 +3,29 @@
     <div class="row">
       <!-- Error block for exceptions -->
       <div v-if="isError" class="col-sm-12 text-center mt-5">
-        <h5 class="h5 text-danger">{{errorMsg}}</h5>
-        <button type="button" class="btn btn-danger" @click="isError = false">Ok</button>
+        <h5 class="h5 text-danger">{{ errorMsg }}</h5>
+        <button type="button" class="btn btn-danger" @click="isError = false">
+          Ok
+        </button>
       </div>
       <div v-else class="col-sm-12">
         <div v-if="loading" class="col-sm-12 text-center mt-5">
-          <img src="../../static/images/svg_loader.svg" height="150">
+          <img src="svg_loader.svg" height="150" />
         </div>
         <div v-else class="col-sm-12">
           <h2 class="h2 py-3 border-bottom">Uploading a CSV File</h2>
-          <h5 class="h5 py-5">To upload a CSV file, please make sure to follow these simple rules:</h5>
+          <h5 class="h5 py-5">
+            To upload a CSV file, please make sure to follow these simple rules:
+          </h5>
           <ul class="list-group ml-5">
             <li class="list-group-item">Header Row Is Present</li>
-            <li
-              class="list-group-item"
-            >Column Order Is: First_Name (String) ,Last_Name (String), Group_Name(String), Role_ID(int)</li>
-            <li class="list-group-item">For Role ID's Refer to the Roles Section</li>
+            <li class="list-group-item">
+              Column Order Is: First_Name (String) ,Last_Name (String),
+              Group_Name(String), Role_ID(int)
+            </li>
+            <li class="list-group-item">
+              For Role ID's Refer to the Roles Section
+            </li>
           </ul>
         </div>
         <div v-if="!loading" class="col-sm-12 text-center mt-5">
@@ -29,10 +36,12 @@
               @change="checkFile($event)"
               title="Upload CSV File"
               accept=".csv"
-            >
+            />
             <label for="file" class="btn-2">Upload</label>
           </div>
-          <div v-else class="alert alert-success" role="alert">Upload Was A...... Success!</div>
+          <div v-else class="alert alert-success" role="alert">
+            Upload Was A...... Success!
+          </div>
         </div>
       </div>
     </div>
@@ -72,7 +81,7 @@ export default {
         worker: true,
         comments: false,
         skipEmptyLines: false,
-        error: error => {
+        error: () => {
           this.errorMsg = "Please Check Your CSV File for the proper format.";
           this.isError = true;
           this.loading = false;
@@ -103,7 +112,7 @@ export default {
             "Content-Type": "application/json"
           }
         })
-        .then(response => {
+        .then(() => {
           this.uploadNotSuccesful = false;
         })
         .catch(() => {

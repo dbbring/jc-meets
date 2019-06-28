@@ -3,25 +3,41 @@
     <div class="row">
       <!-- Error block for exceptions -->
       <div v-if="isError" class="col-sm-12 text-center mt-5">
-        <h5 class="h5 text-danger">There was a Error Submitting Your Request.</h5>
+        <h5 class="h5 text-danger">
+          There was a Error Submitting Your Request.
+        </h5>
       </div>
       <!-- Loader -->
       <div v-else-if="loading" class="col-sm-12 text-center mt-5">
-        <img src="../../static/images/svg_loader.svg" height="150">
+        <img src="svg_loader.svg" height="150" />
       </div>
       <!-- Main Content Block -->
       <div v-else v-for="(x, index) in groups" :key="index" class="col-lg-6">
         <div class="card text-center mt-3">
           <div class="card-header">Standard Group</div>
           <div class="card-body">
-            <h5 class="card-title">{{x.Group_Name}}</h5>
+            <h5 class="card-title">{{ x.Group_Name }}</h5>
             <p class="card-text">Group Description would go here normally..</p>
-            <a href="#" class="btn btn-primary" @click="showGroupDetails(index)">Group Details</a>
+            <a href="#" class="btn btn-primary" @click="showGroupDetails(index)"
+              >Group Details</a
+            >
           </div>
           <div class="card-footer text-muted">
-            <i class="fas fa-plus-circle mr-2" @click="showAddModal = true" title="Add a New Group"></i>
-            <i class="fas fa-edit" @click="editModal(index)" title="Edit Group"></i>
-            <i class="fas fa-trash-alt ml-2" @click="deleteModal (index)" title="Delete Group"></i>
+            <i
+              class="fas fa-plus-circle mr-2"
+              @click="showAddModal = true"
+              title="Add a New Group"
+            ></i>
+            <i
+              class="fas fa-edit"
+              @click="editModal(index)"
+              title="Edit Group"
+            ></i>
+            <i
+              class="fas fa-trash-alt ml-2"
+              @click="deleteModal(index)"
+              title="Delete Group"
+            ></i>
           </div>
         </div>
         <!-- end card -->
@@ -34,12 +50,24 @@
       <div slot="body">
         <form class="form">
           <label class="label small text-left">Group Name:</label>
-          <input type="text" v-model="editName">
+          <input type="text" v-model="editName" />
         </form>
       </div>
       <div slot="footer">
-        <button type="button" class="btn btn-secondary" @click="showEditModal = false">Cancel</button>
-        <button type="button" class="btn btn-success" @click="submitEditModal()">Ok</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          @click="showEditModal = false"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          @click="submitEditModal()"
+        >
+          Ok
+        </button>
       </div>
     </modal>
     <!-- Delete Modal -->
@@ -47,8 +75,20 @@
       <h3 slot="header">Delete Group</h3>
       <div slot="body">Are you sure you want to delete this group?</div>
       <div slot="footer">
-        <button type="button" class="btn btn-secondary" @click="showDeleteModal = false">Cancel</button>
-        <button type="button" class="btn btn-success" @click="submitDeleteModal()">Ok</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          @click="showDeleteModal = false"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          @click="submitDeleteModal()"
+        >
+          Ok
+        </button>
       </div>
     </modal>
     <!-- Add new group modal -->
@@ -57,29 +97,52 @@
       <div slot="body">
         <form class="form">
           <label class="label small text-left">Group Name:</label>
-          <input type="text" v-model="addName">
+          <input type="text" v-model="addName" />
         </form>
       </div>
       <div slot="footer">
-        <button type="button" class="btn btn-secondary" @click="showAddModal = false">Cancel</button>
-        <button type="button" class="btn btn-success" @click="submitAddModal()">Ok</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          @click="showAddModal = false"
+        >
+          Cancel
+        </button>
+        <button type="button" class="btn btn-success" @click="submitAddModal()">
+          Ok
+        </button>
       </div>
     </modal>
     <!-- Show Group details modal -->
     <modal v-if="showDetailModal" @close="showDetailModal = false">
-      <h3 slot="header">{{groupDetails.groupName}}</h3>
+      <h3 slot="header">{{ groupDetails.groupName }}</h3>
       <div slot="body">
         Organizer:
-        <div v-for="(x, index) in groupDetails.groupManagers" :key="index">{{x}}</div>
-        <br>
-        <br>Presenters:
-        <div v-for="(x, index) in groupDetails.groupPresenters" :key="index + 200">{{x}}</div>
-        <br>
-        <br>Members:
-        <div v-for="(x, index) in groupDetails.groupMembers" :key="index + 100">{{x}}</div>
+        <div v-for="(x, index) in groupDetails.groupManagers" :key="index">
+          {{ x }}
+        </div>
+        <br />
+        <br />Presenters:
+        <div
+          v-for="(x, index) in groupDetails.groupPresenters"
+          :key="index + 200"
+        >
+          {{ x }}
+        </div>
+        <br />
+        <br />Members:
+        <div v-for="(x, index) in groupDetails.groupMembers" :key="index + 100">
+          {{ x }}
+        </div>
       </div>
       <div slot="footer">
-        <button type="button" class="btn btn-success" @click="showDetailModal = false">Ok</button>
+        <button
+          type="button"
+          class="btn btn-success"
+          @click="showDetailModal = false"
+        >
+          Ok
+        </button>
       </div>
     </modal>
   </div>
@@ -88,7 +151,6 @@
 <script>
 import axios from "axios";
 import Modal from "./Modal";
-import { constants } from "fs";
 
 export default {
   name: "groups",
@@ -155,7 +217,7 @@ export default {
       url = encodeURI(url);
       axios
         .delete(url)
-        .then(response => {
+        .then(() => {
           this.getData();
         })
         .catch(() => {
@@ -186,7 +248,7 @@ export default {
         Group_ID: this.activeGroup + 1,
         Group_Name: cleanEditName
       });
-      axios.put(url, data).then(response => {
+      axios.put(url, data).then(() => {
         this.loading = false;
         // Instead of making another API call lets just update the current array
         this.groups[this.activeGroup].Group_Name = this.editName;
@@ -196,10 +258,10 @@ export default {
     @params -> int, index number of selected group item
     @return -> none
     */
-    submitAddModal(arrIndexNum) {
+    submitAddModal() {
       this.showAddModal = false;
       this.loading = true;
-      let cleanAddName = sanitize(this.addName);
+      let cleanAddName = this.sanitize(this.addName);
       let url = "http://localhost:5000/group";
       let data = JSON.stringify({
         Group_Name: cleanAddName
@@ -211,7 +273,7 @@ export default {
             "Content-Type": "application/json"
           }
         })
-        .then(response => {
+        .then(() => {
           this.getData();
         })
         .catch(() => {
@@ -317,7 +379,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 i {
