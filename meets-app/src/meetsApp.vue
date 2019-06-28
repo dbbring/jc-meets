@@ -11,7 +11,17 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-3 bg-danger" style="height: 75vH;">
+        <nav class="navbar navbar-light bg-warning w-100" id="hamMenu" @click="showMenu()">
+          <button class="navbar-toggler" type="button">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </nav>
+        <div
+          :class="{showHiddenMenu : showMenuDiv}"
+          class="col-md-3 bg-danger"
+          style="height: 75vH;"
+          id="menu"
+        >
           <div class="list-group mt-4">
             <!-- populate sidebar menu -->
             <a
@@ -48,6 +58,8 @@ export default {
   name: "meetsApp",
   data() {
     return {
+      showMenuDiv: false,
+      showMobileToggle: true,
       sections: [
         { title: "About JC Meets", show: true },
         { title: "Upload Data", show: false },
@@ -74,15 +86,45 @@ export default {
       this.sections[this.activeSection].show = false;
       this.sections[newSection].show = true;
       this.activeSection = newSection;
+      if (window.innerWidth < 767) {
+        this.showMenuDiv = false;
+      }
       return;
+    },
+    showMenu() {
+      this.showMenuDiv = !this.showMenuDiv;
+    }
+  },
+  mounted() {
+    if (window.innerWidth > 767) {
+      this.showMenuDiv = true;
+      this.showMobileToggle = false;
     }
   }
 };
 </script>
 
 <style>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+@media screen and (max-width: 767px) {
+  #menu {
+    display: none;
+  }
+
+  #hamMenu {
+    display: block !important;
+  }
+
+  .showHiddenMenu {
+    display: block !important;
+  }
+}
+
+#hamMenu {
+  display: none;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
